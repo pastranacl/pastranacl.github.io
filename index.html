@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+    <meta name="description" content="Hexatic room. Maximize distance between individuals">
+    <meta name="keywords" content="hexatic, room, optimization, security distance, coronavirus, health">
+    <meta name="Author" content="Cesar Lopez Pastrana, PhD">
+    <title>Hexatic Room (CLP) | Home</title>
+    <link rel="stylesheet" href="styles.css" type="text/css">
+  </head>
+  <body style="                 color: rgb(0, 0, 0); background-color: rgb(0, 10, 30);"
+    vlink="#990099" link="#000099" alink="#000099">
+    <br>
+    <div style="text-align: center;">
+      <table style="text-align: left; height: 150px; width: 1091px;" cellspacing="0"
+        cellpadding="0" border="0" align="center">
+        <tbody>
+          <tr align="center">
+            <td colspan="1" rowspan="1" style="text-align: left; vertical-align: middle; width: 627px; background-color: white;"
+              height="100"><big><big><big><span style="font-family: Helvetica,Arial,sans-serif; font-weight: bold; color:#990000"><br>
+                      &nbsp;<span style="color: #121c12;">HEXATIC ROOM &nbsp;</span>&nbsp;&nbsp;&nbsp;
+                      <br><br>
+                    </span></big></big></big></td>
+            <td rowspan="1" style="text-align: center; vertical-align: middle; width: 218px; background-color: white; margin-left: 1145px; height: 100px;"
+              width="157" height="100"> <img src="logo.png" alt="logo" title="logo"
+                style="width: 255px; height: 121px;"></td>
+          </tr>
+        </tbody>
+      </table>
+      <p>&nbsp;</p>
+      <table style="text-align: left; width: 1092px; height: 334px;" cellspacing="0"
+        cellpadding="0" bordercolor="#FFFFFF" border="0" align="center">
+        <tbody>
+          <tr align="center">
+            <td rowspan="1" class="table_general" style="text-align: left; vertical-align: top; background-color: white; margin-left: -94px;"
+              width="20" height="100">
+              <p class="table_general">&nbsp;</p>
+            </td>
+            <td rowspan="1" class="table_general" style="text-align: left; vertical-align: top; background-color: white; margin-left: 62px;"
+              width="269"> <br>
+              <a href="instructions.htm">Read instructions &gt;&gt;</a><br>
+              <br>
+              <br>
+              Load plan: <input id="file_input" type="file"><br>
+              <br>
+              <input id="room_sq" name="shape_type" checked="checked" value="room"
+                type="radio"><label for="room_sq">Room</label> <input id="restraints"
+                name="shape_type" value="general" type="radio"><label for="restraints">Restraints</label>
+              <input id="scale" name="shape_type" value="scale" type="radio"><label
+                for="scale">Scale</label>&nbsp;&nbsp;&nbsp;&nbsp; Scale value: <input
+                id="scale_value" value="2" style="width:40px; text-align: center"
+                type="number"> meters&nbsp;&nbsp;&nbsp;&nbsp; #Individuals: <input
+                id="individuals" value="15" style="width:40px; text-align: center"
+                type="number"><br>
+              <br>
+              <button id="analyze" title="Maximize the distance between individuals">Analyze</button>
+              <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.4.0/fabric.min.js"></script>(This
+              may take a while)<br>
+              <br>
+              <div style="text-align: center;"> <canvas id="plane_canvas" width="970"
+                  height="500" style="border:4px solid #ccc"></canvas></div>
+              <br>
+              <button id="clear_points" title="Remove all the points drawn after the analysis">Clear
+                points</button>&nbsp; <button id="clear_all" title="Remove everything on the canvas, including rooms, restraints and scale">Clear
+                all</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <button id="download" title="Download the canvas as image">Download</button><br>
+              <br>
+              <br>
+              <b>Log console:</b>
+              <p id="log_console_id" style="font-family:monospace">&gt;&gt; </p>
+              <br>
+              <br>
+              <br>
+              &nbsp;
+              <script src="hexatic_room.js"></script><br>
+              <br>
+              <p><br>
+              </p>
+              <p><br>
+              </p>
+              <p><br>
+              </p>
+              <p><br>
+              </p>
+            </td>
+            <td rowspan="1" class="table_back_right" style="text-align: left; vertical-align: middle; width: 20px; background-color: rgb(255, 255, 255);"
+              width="20" height="100" align="center">&nbsp;</td>
+          </tr>
+        </tbody>
+      </table>
+      <span style="color: #999999;"><font size="2"><br>
+        </font></span></div>
+    <div style="text-align: center;"><span style="color: #999999;"><font size="2"><br>
+        </font></span></div>
+    <div style="text-align: center;"><span style="color: #999999;"><font size="2"><br>
+        </font></span></div>
+    <div style="text-align: center; background-color: #000a1e;"><span style="color: #EEEEEE;"><span
+          style="font-family: sans-serif;"><font size="2">C&eacutesar L&oacutepez Pastrana, 2020</font></span></span></div>
+    <div style="text-align: center; background-color: #000a1e;"><span style="color: #cccccc;"><font
+          size="2"><br>
+        </font></span></div>
+    <div style="text-align: center; background-color: #000a1e;"><span style="color: #cccccc;"><font
+          size="2"><br>
+        </font></span></div>
+  </body>
+</html>
