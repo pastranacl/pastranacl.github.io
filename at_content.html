@@ -1,0 +1,184 @@
+<html>
+<title>Aneurisma: AT content analyzer</title>
+Window (bp):  <input type="number" id="window_bp"><br><br>
+<textarea id="in_sequence" rows="20" cols="71" width="800"></textarea>
+<br><br>
+<button onclick="at_content()">Analyse</button><br><br>
+<p id="nbp_id"></p>
+<p id="average_par"></p>
+<b>AT Content:</b><br><canvas id="at_plot" width="580" height="150" style="border: 1px solid #ddd;">Your browser does not support the HTML5 canvas tag</canvas><br>
+<p id="perc_at"></p>
+<script>
+/*
+
+    This script calculates the AT content of the input sequence considering the 
+    window specific by the user considering left->rigth and right->left scanning.
+    Copyright (C) 2018 Cesar Lopez Pastrana
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  
+*/
+
+function at_content() 
+{
+
+	
+	var wbp = Number(document.getElementById("window_bp").value); // If you don't use Number Java considers the input numeric as string!! WTF
+	var sq = document.getElementById("in_sequence").value;
+	var sum_at = 0;
+	var i, n = 0;
+	n_nts = sq.length
+	
+	if( (n_nts - wbp) < 0)
+	{
+		document.getElementById("average_par").innerHTML = "Window larger than the number of base pairs!";
+		return;
+	}
+	
+	document.getElementById("nbp_id").innerHTML = "<b>Number of base pairs: </b>" + n_nts ;
+	
+	var at_perc = new Array(n_nts);
+	var at_perc_lr = new Array(n_nts);
+	var at_perc_rl = new Array(n_nts);
+	at_perc_lr.fill(0);
+	at_perc_rl.fill(0);
+	at_perc.fill(0);
+
+	for(i=0; i < n_nts-wbp; i++ )
+	{
+		for(n=i; n<i+wbp; n++ ) {
+			if( sq[n] == 'A' || sq[n] == 'a'  || sq[n] == 't' || sq[n] == 'T' )
+				at_perc_lr[i]++;
+		}
+		at_perc_lr[i] /= wbp;
+	}
+	
+	for(i=n_nts; i>=wbp; i-- )
+	{
+		for(n=i; n>i-wbp; n-- )	{
+			if( sq[n] == 'A' || sq[n] == 'a'  || sq[n] == 't' || sq[n] == 'T' )
+				at_perc_rl[i]++;
+		}
+		at_perc_rl[i] /= wbp;
+	}
+
+
+	
+	for(i=0;i<wbp; i++)
+		at_perc[i] = at_perc_lr[i];
+	for(i=n_nts-1; i>=n_nts - wbp; i--)
+		at_perc[i] = at_perc_rl[i];
+	
+	for(i=wbp;i<n_nts-wbp; i++)
+		at_perc[i] = (at_perc_rl[i] +  at_perc_lr[i])/2;
+
+
+	plot2d(at_perc);
+	
+	document.getElementById("average_par").innerHTML = "<b>Average content AT: </b>" + 100*arr_av(at_perc)	+ "%";
+	//document.getElementById("average_par").innerHTML = "<b>Average content AT: </b>" + sum_at/(2*(n_nts-wbp))	+ "%";
+	at_perc = at_perc.map(String);  // Converts numeric array to string array
+	document.getElementById("perc_at").innerHTML = "<b>Data (AT content)</b><br>" + at_perc.join("<br>"); // Converts the comma separated array of strings in a set of data separated by carrier return
+	
+}
+
+/* This function calculates the average of the data contained in the array x_i 
+   This step in principle is unnecessary since it can be calculated from the intervals
+*/
+function arr_av(x_i)
+{
+	var N = x_i.length;
+	var sumx_i = 0;
+	
+	for(var i=0; i < N-1; i++)
+		sumx_i += x_i[i];
+	return sumx_i/N;
+}
+
+/* This function allows you to plot the AT data considering that these 
+    are distributed in the interval [0,1]  */
+function plot2d(y_values)
+{
+	var canvas = document.getElementById("at_plot");
+	var the_context = canvas.getContext("2d");
+	var width = 580;
+	var height = 150;
+	
+	the_context.clearRect(0, 0, width, height)
+	the_context.strokeRect(0, 0, width, height)
+	
+	
+	/* Plots the lines corresponding to the 25%, 50% and 75% */
+	the_context.beginPath();
+	the_context.lineWidth="1";
+	the_context.strokeStyle="red";
+	the_context.setLineDash([5, 5]);
+	the_context.moveTo(0, height/2);
+	the_context.lineTo(width, height/2);
+	the_context.stroke();
+	
+	the_context.beginPath();
+	the_context.lineWidth="1";
+	the_context.strokeStyle="red";
+	the_context.setLineDash([5, 5]);
+	the_context.moveTo(0, height/4);
+	the_context.lineTo(width, height/4);
+	the_context.stroke();
+	
+	the_context.beginPath();
+	the_context.lineWidth="1";
+	the_context.strokeStyle="red";
+	the_context.setLineDash([5, 5]);
+	the_context.moveTo(0, 3*height/4);
+	the_context.lineTo(width, 3*height/4);
+	the_context.stroke();
+	
+	// Plots label of percentages
+	the_context.strokeStyle="black";
+	the_context.setLineDash([]); // Removes the dashed lines
+	the_context.font="12px Arial";
+	the_context.fillText("25%", 0, 3*height/4); //Stroke text if you don't want filled text
+	the_context.fillText("75%", 0, height/4); 
+	
+	// Plots labels in the x_axis
+	var txt = Math.round(y_values.length/4);
+	txt=txt.toString();
+	the_context.fillText(txt, width/4 - the_context.measureText(txt).width/2, height-1); 
+	
+	txt = Math.round(y_values.length/2);
+	txt=txt.toString();
+	the_context.fillText(txt, width/2 - the_context.measureText(txt).width/2, height-1); 
+	
+	var txt = Math.round(3*y_values.length/4);
+	txt=txt.toString();
+	the_context.fillText(txt, 3*width/4 - the_context.measureText(txt).width/2, height-1); 
+	
+	
+	
+	// Plots the data
+	the_context.beginPath();
+	the_context.moveTo(width/(y_values.length) - 1, height - y_values[0]*height);
+	the_context.lineWidth="3";
+	for (var x = 1; x < y_values.length; x++) 
+		the_context.lineTo(width*x/(y_values.length) - 1, height - y_values[x]*height);
+	
+	the_context.stroke();
+	
+	//document.getElementById("nbp_id").innerHTML = document.getElementById("in_sequence").value;
+}
+
+</script>
+<br><br><br>
+<center><font size="2">Cesar LP, 2018</font></center>
+</html>
